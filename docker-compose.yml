@@ -1,0 +1,22 @@
+version: "3"
+services:
+    db:
+        image: mysql:latest
+        env_file: .env
+        volumes:
+            - db-data:/var/lib/mysql
+    wordpress:
+        build: ./wordpress
+        ports:
+            - "8080:80"
+        depends_on:
+            - db
+        environment:
+            WORDPRESS_DB_HOST: "db:3306"
+        env_file: .env
+        volumes:
+            - ./themes:/var/www/html/wp-content/themes
+            - ./Movefile:/var/www/html/Movefile
+volumes:
+    db-data:
+      driver: local
